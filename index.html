@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<textarea id="paragraph">
+Jun: ...
+Zen: ...
+Jun: Também.
+Des: Olá, meu nome é Desmond. Sou um novo aluno da Faculdade de Ciência da Computação
+Jun: ... 
+Zen: ... Muito Prazer
+Des: Vocês moram no hostel?
+Jun: ... doze
+Des: Eu moron a faculdade de residência 8. Já almo çam?
+Zen: ... sar logo.
+Des: Onde é que vocês comem o vosso almoço?
+Jun: ...
+Zen: ...porque é barato
+Des: Eu também. Eu gosto muito de arroz frito. O que vocês todos gostam de comer?
+Zen: ... E você?
+Des: Eu gosto de comer sobremesa porque é doce.
+Jun: ...
+Zen: ... nas proximidades
+Des: Oh! É Inside Scoop, a loja perto de Bangsar?
+Zen: ...
+Jun: ... gelado vanilla
+Des: Eu também. Mas eu prefiro o sabor de menta.
+Zen: ...
+Jun: ...sexta-feira?
+Des: Claro, vamos embora.
+Zen: ...
+Jun: ...sexta-feria
+Des: Ehhh, é quase a hora da aula de português. Precisamos ir agora!
+Zen: ...
+Jun: ...mais tarde?
+Des: Certo.
+Zen: ..
+Jun: Bem. ... aula.
+Des: Vamos lá!
+</textarea>
+<p>Speed: <input type="text" name="speed" id="speed" value="1"></p>
+<div>
+    <button id="start_button">SPEAK INFINITE</button>
+    <button id="stop_button">STOP</button>
+</div>
+</body>
+<script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+$(document).ready(()=> {
+    var text;
+    var voices;
+    var STOP = false;
+
+    window.speechSynthesis.onvoiceschanged = function() {
+      text = new SpeechSynthesisUtterance();
+      voices = window.speechSynthesis.getVoices();
+      text.voiceURI = 'Google português do Brasil'; //discovered after dumping getVoices()
+      text.lang = "pt-BR";
+      text.localService = true;
+      text.voice = voices[15]; //index to the voiceURI. This index number is not static.
+    }
+
+    $('#stop_button').click(function() {
+        window.speechSynthesis.cancel();
+    });
+
+
+    $('#start_button').click(function() {
+
+        startSpeaking = function(line){
+          text.text = line;
+          text.rate = parseFloat($('#speed').val());
+          speechSynthesis.speak(text);
+        }
+
+        var line = $('#paragraph').val();
+        startSpeaking(line);
+        text.onend = startSpeaking($('#paragraph').val());
+    })
+});
+</script>
+</html>
